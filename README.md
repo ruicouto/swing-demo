@@ -1,7 +1,7 @@
 swing-demo
 ==========
 
-A simple Java Swing application, developed for demonstration purposes.
-The demo is a videogame library.
+A simple Java Swing application, developed in the context of the Java swing workshop 2015.
+The demo is a videogame library, as a NetBeans project.
 
-This demo is a NetBeans project.
+Source code updated to implement Layers, Facade and Observer patterns.

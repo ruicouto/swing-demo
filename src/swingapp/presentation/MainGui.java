@@ -4,7 +4,10 @@
  */
 package swingapp.presentation;
 
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import swingapp.business.Game;
 import swingapp.business.Games;
 
@@ -12,9 +15,9 @@ import swingapp.business.Games;
  * Main user interface
  * @author ruicouto
  */
-public class MainGui extends javax.swing.JFrame {
+public class MainGui extends javax.swing.JFrame implements Observer {
 
-    /** reference to games */
+    /** reference to games - MODEL */
     private final Games games;
     
     /**
@@ -23,7 +26,9 @@ public class MainGui extends javax.swing.JFrame {
      */
     public MainGui(Games games) {
         initComponents();
+        jList1.setCellRenderer(new TextRenderer());
         this.games = games;
+        games.addObserver(this);
         fillData();
     }
     
@@ -73,6 +78,8 @@ public class MainGui extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jSplitPane1.setDividerLocation(250);
 
         jList1.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -124,7 +131,7 @@ public class MainGui extends javax.swing.JFrame {
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addGap(18, 18, 18)
-                                .addComponent(jSlider1, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE))
+                                .addComponent(jSlider1, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE))
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel5Layout.createSequentialGroup()
@@ -176,7 +183,7 @@ public class MainGui extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 61, Short.MAX_VALUE))
+                .addGap(0, 81, Short.MAX_VALUE))
         );
 
         jSplitPane1.setRightComponent(jPanel4);
@@ -198,11 +205,11 @@ public class MainGui extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 427, Short.MAX_VALUE)
+            .addGap(0, 582, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 265, Short.MAX_VALUE)
+            .addGap(0, 285, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Have", jPanel2);
@@ -211,11 +218,11 @@ public class MainGui extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 427, Short.MAX_VALUE)
+            .addGap(0, 582, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 265, Short.MAX_VALUE)
+            .addGap(0, 285, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Want", jPanel3);
@@ -241,11 +248,11 @@ public class MainGui extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
         );
 
         pack();
@@ -275,19 +282,22 @@ public class MainGui extends javax.swing.JFrame {
      * @param evt 
      */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        NewGameGui ng = new NewGameGui(this);
-        ng.setVisible(true);
+        NewGameGui ng = new NewGameGui(games);
+        ng.setLocationRelativeTo(this); //center on this window
+        ng.setVisible(true); //show
     }//GEN-LAST:event_jMenuItem1ActionPerformed
-
+    
     /**
-     * Public class to handle games created externally, i.e., by the NewGameGui.
-     * @param g 
+     * Called when model is changed
+     * @param o Trigger class instance
+     * @param arg Arguments
      */
-    public void addGame(Game g) {
-        //add game to collection
-        this.games.getGames().add(g);
-        //update game list
+    @Override
+    public void update(Observable o, Object arg) {
         fillData();
+        if(!arg.toString().isEmpty()) {
+            JOptionPane.showMessageDialog(this, arg.toString());
+        }
     }
     
 
@@ -316,4 +326,5 @@ public class MainGui extends javax.swing.JFrame {
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
+
 }

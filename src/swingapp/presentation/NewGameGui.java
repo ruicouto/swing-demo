@@ -5,21 +5,22 @@
 package swingapp.presentation;
 
 import swingapp.business.Game;
+import swingapp.business.Games;
 
 /**
- *
+ * Window to create a new game
  * @author ruicouto
  */
 public class NewGameGui extends javax.swing.JFrame {
-    /** reference to parent class */
-    private MainGui mainGui;
+    /** reference to games class - MODEL */
+    private Games games;
     
     /**
      * Creates new form NewGameGui
      */
-    public NewGameGui(MainGui mainGui) {
+    public NewGameGui(Games games) {
         initComponents();
-        this.mainGui = mainGui;
+        this.games = games;
     }
 
     /**
@@ -136,8 +137,8 @@ public class NewGameGui extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //create new game instance
         Game g = new Game(jTextField1.getText(), jTextField2.getText(), jSlider1.getValue(), jCheckBox1.isSelected(), jRadioButton1.isSelected(), jRadioButton2.isSelected());
-        //call addGame method from MainGui (will update the Games instance and the UI list
-        mainGui.addGame(g);
+        //add the game to the business class
+        games.addGame(g);
         //dispose this form.
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
